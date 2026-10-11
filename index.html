@@ -222,7 +222,8 @@
     text-wrap: balance;
   }
   .status {
-    display: inline-flex;
+    display: flex;
+    justify-content: center;
     align-items: center;
     gap: 12px;
     margin: 26px 0 0;
@@ -234,6 +235,8 @@
     color: var(--gold-dim);
   }
 
+
+  .status.ea { margin-top: 8px; color: var(--gold-soft); }
 
   /* menu line */
   nav { margin: 46px 0 0; }
@@ -395,6 +398,7 @@
   <p class="genre">A dark turn-based RPG.</p>
   <p class="premise">Murdered by the boy he taught to read, a king walks back into a kingdom that has forgotten itself.</p>
   <p class="status">In development.</p>
+  <p class="status ea">Early Access 2027</p>
   <nav aria-label="Follow Textonia">
     <ul>
       <li><a href="https://x.com/textoniagame" rel="me">X</a></li>
