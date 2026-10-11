@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Textonia: Remembrance of a Hollow Crown</title>
+<meta name="description" content="A dark turn-based RPG. Murdered by the boy he taught to read, a king walks back into a kingdom that has forgotten itself. In development.">
+<meta name="theme-color" content="#0e0d11">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/pixelify-bold-latin.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/cormorant-garamond-latin.woff" as="font" type="font/woff" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://textonia.com/">
+<meta property="og:title" content="Textonia: Remembrance of a Hollow Crown">
+<meta property="og:description" content="A dark turn-based RPG. Murdered by the boy he taught to read, a king walks back into a kingdom that has forgotten itself.">
+<meta property="og:image" content="https://textonia.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  @font-face {
+    font-family: "Pixelify Sans";
+    src: url("/fonts/pixelify-bold-latin.woff") format("woff");
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("/fonts/cormorant-garamond-latin.woff") format("woff");
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("/fonts/cormorant-garamond-italic-latin.woff") format("woff");
+    font-weight: 300 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  :root {
+    --bg: #0e0d11;
+    --bg-deep: #060508;
+    --gold: #f5d46b;
+    --gold-soft: #d9bc68;
+    --gold-dim: #a08a55;
+    --text: #d9d0bd;
+    --muted: #8c8577;
+    --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-deep); }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 16px 36px;
+    color: var(--text);
+    font: 500 20px/1.55 var(--serif);
+    text-align: center;
+    overflow-x: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(60% 46% at 50% 30%, rgba(245, 212, 107, 0.085) 0%, rgba(245, 212, 107, 0.03) 42%, rgba(245, 212, 107, 0) 70%),
+      radial-gradient(130% 100% at 50% 34%, #15131a 0%, var(--bg) 46%, var(--bg-deep) 100%);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+  }
+  /* deep vignette and a whisper of film grain, both pure CSS */
+  body::before, body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+  body::before {
+    background: radial-gradient(120% 85% at 50% 40%, rgba(0, 0, 0, 0) 52%, rgba(0, 0, 0, 0.62) 100%);
+  }
+  body::after {
+    opacity: 0.05;
+    background:
+      repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0 1px, transparent 1px 2px);
+    mix-blend-mode: overlay;
+  }
+  main { width: 100%; max-width: 64rem; }
+
+  /* crown on a warm diffuse light */
+  .crest { position: relative; width: 228px; height: 228px; margin: 0 auto -34px; }
+  .crest::before {
+    content: "";
+    position: absolute;
+    inset: -70px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(245, 212, 107, 0.16), rgba(245, 160, 70, 0.05) 55%, rgba(245, 212, 107, 0) 100%);
+    animation: breathe 7s ease-in-out infinite;
+  }
+  .crown {
+    position: relative;
+    width: 228px;
+    height: 228px;
+    display: block;
+    mix-blend-mode: lighten;
+    -webkit-mask-image: radial-gradient(closest-side, #000 66%, rgba(0, 0, 0, 0) 94%);
+    mask-image: radial-gradient(closest-side, #000 66%, rgba(0, 0, 0, 0) 94%);
+    animation: flicker 6.3s linear infinite;
+  }
+  .crest::after {
+    content: "";
+    position: absolute;
+    inset: -18px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 226, 140, 0.20), rgba(255, 190, 90, 0.06) 60%, rgba(255, 210, 120, 0) 100%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    animation: pulse 3.2s ease-in-out infinite;
+  }
+
+  /* embers drifting up, pure CSS */
+  .embers { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .embers i {
+    position: absolute;
+    bottom: -12px;
+    left: var(--x);
+    width: var(--s);
+    height: var(--s);
+    background: #ffd27a;
+    box-shadow: 0 0 6px 1px rgba(255, 190, 90, 0.75);
+    opacity: 0;
+    animation: rise var(--d) linear var(--t) infinite;
+  }
+  .embers i:nth-child(3n) { background: #ffb35c; }
+  .embers i:nth-child(4n) { background: #fff0b8; }
+  main, footer { position: relative; z-index: 1; }
+
+  h1 { margin: 0; font-weight: 400; }
+  .title {
+    display: inline-block;
+    font-family: "Pixelify Sans", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(60px, 18.5vw, 120px);
+    line-height: 1;
+    letter-spacing: 0.015em;
+    padding: 0 0.04em;
+    color: var(--gold);
+    background: linear-gradient(105deg, rgba(255, 250, 225, 0) 0%, rgba(255, 250, 225, 0) 41%, rgba(255, 246, 205, 0.75) 48%, rgba(255, 252, 238, 0.95) 50%, rgba(255, 246, 205, 0.75) 52%, rgba(255, 250, 225, 0) 59%, rgba(255, 250, 225, 0) 100%) 0 0 / 300% 100% no-repeat,
+                linear-gradient(180deg, #ffe593 0%, #f5d46b 55%, #d9ae4a 100%);
+    background-position: 100% 0, 0 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(245, 212, 107, 0.22)) drop-shadow(0 4px 0 rgba(0, 0, 0, 0.55));
+    animation: sheen 9s ease-in-out 1.2s infinite;
+  }
+  .subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin: 20px 0 0;
+    font-size: clamp(17px, 2.6vw, 23px);
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.3em;
+    color: var(--gold-soft);
+    text-shadow: 0 0 22px rgba(245, 212, 107, 0.18);
+  }
+  .subtitle span { padding-left: 0.3em; white-space: nowrap; }
+  .subtitle::before, .subtitle::after {
+    content: "";
+    flex: 0 1 72px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245, 212, 107, 0), rgba(245, 212, 107, 0.6));
+  }
+  .subtitle::after { transform: scaleX(-1); }
+
+  /* hairline with a single gem */
+  .rule {
+    position: relative;
+    width: min(340px, 70%);
+    height: 1px;
+    margin: 36px auto 30px;
+    background: linear-gradient(90deg, rgba(245, 212, 107, 0), rgba(245, 212, 107, 0.42) 50%, rgba(245, 212, 107, 0));
+  }
+  .rule::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: 0 0 10px rgba(245, 212, 107, 0.7), 0 0 0 4px var(--bg);
+  }
+
+  .genre {
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.26em;
+    color: var(--gold-soft);
+  }
+  .premise {
+    margin: 0 auto;
+    max-width: 31rem;
+    font-size: clamp(22px, 3vw, 27px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.42;
+    color: var(--text);
+    text-wrap: balance;
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 26px 0 0;
+    font-size: 15px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+  }
+  .status::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px rgba(245, 212, 107, 0.8);
+    animation: ember 3.6s ease-in-out infinite;
+  }
+
+  /* menu line */
+  nav { margin: 46px 0 0; }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    row-gap: 14px;
+  }
+  nav li { display: flex; align-items: center; }
+  nav li + li::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    margin: 0 16px;
+    background: var(--gold-dim);
+    transform: rotate(45deg);
+    opacity: 0.8;
+  }
+  a { color: inherit; text-decoration: none; }
+  nav a, .contact a {
+    position: relative;
+    transition: color 0.35s ease, text-shadow 0.35s ease;
+  }
+  nav a {
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.2em;
+    color: var(--text);
+    padding: 4px 0 4px 0.2em;
+  }
+  nav a::after, .contact a::after {
+    content: "";
+    position: absolute;
+    left: 0.2em;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245, 212, 107, 0), var(--gold), rgba(245, 212, 107, 0));
+    transform: scaleX(0);
+    transition: transform 0.45s ease;
+  }
+  nav a:hover, nav a:focus-visible, .contact a:hover, .contact a:focus-visible {
+    color: var(--gold);
+    text-shadow: 0 0 14px rgba(245, 212, 107, 0.45);
+    outline: none;
+  }
+  nav a:hover::after, nav a:focus-visible::after, .contact a:hover::after, .contact a:focus-visible::after { transform: scaleX(1); }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 40px;
+    margin: 30px 0 0;
+    font-size: 18px;
+    color: var(--muted);
+  }
+  .contact .lbl {
+    font-size: 14px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.26em;
+    color: var(--gold-dim);
+    margin-right: 10px;
+  }
+  .contact a { color: var(--muted); padding-bottom: 2px; }
+  .contact a::after { left: 0; }
+
+  footer {
+    margin-top: 56px;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc", "lnum";
+    letter-spacing: 0.28em;
+    color: var(--muted);
+  }
+
+  @keyframes sheen {
+    0% { background-position: 100% 0, 0 0; }
+    38%, 100% { background-position: 0% 0, 0 0; }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+  @keyframes flicker {
+    0%, 100% { filter: brightness(1); }
+    7% { filter: brightness(1.07); }
+    11% { filter: brightness(0.96); }
+    19% { filter: brightness(1.04); }
+    33% { filter: brightness(1); }
+    41% { filter: brightness(1.09); }
+    44% { filter: brightness(0.97); }
+    58% { filter: brightness(1.03); }
+    71% { filter: brightness(0.98); }
+    83% { filter: brightness(1.06); }
+    88% { filter: brightness(1); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.97); }
+    50% { opacity: 1; transform: scale(1.04); }
+  }
+  @keyframes rise {
+    0% { transform: translate(0, 0); opacity: 0; }
+    10% { opacity: 0.85; }
+    55% { transform: translate(var(--dx), -55vh); opacity: 0.6; }
+    100% { transform: translate(calc(var(--dx) * -0.5), -105vh); opacity: 0; }
+  }
+  @keyframes ember {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+
+  @media (max-width: 1080px) {
+    /* menu as two composed lines: four, then three */
+    nav ul { row-gap: 4px; }
+    nav ul::before { content: ""; flex-basis: 100%; order: 2; height: 0; }
+    nav li:nth-child(n+5) { order: 3; }
+    nav li:nth-child(5)::before { display: none; }
+  }
+  @media (max-width: 600px) {
+    body { padding: 36px 16px 28px; font-size: 18px; }
+    .crest, .crown { width: 184px; height: 184px; }
+    .crest::before { inset: -46px; }
+    .subtitle { display: block; margin-top: 16px; font-size: 16px; letter-spacing: 0.24em; line-height: 1.5; text-wrap: balance; }
+    .subtitle span { white-space: normal; padding-left: 0.24em; }
+    .subtitle::before, .subtitle::after { display: none; }
+    .rule { margin: 26px auto 24px; }
+    .genre { font-size: 15px; letter-spacing: 0.22em; }
+    .premise { font-size: 21px; }
+    nav { margin-top: 38px; }
+    nav li + li::before { margin: 0 10px; width: 3px; height: 3px; }
+    nav a { font-size: 15px; letter-spacing: 0.14em; padding-left: 0.14em; }
+    nav a::after { left: 0.14em; }
+    .contact { flex-direction: column; gap: 6px; font-size: 17px; margin-top: 26px; }
+    footer { margin-top: 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .embers { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="embers" aria-hidden="true"><i style="--x:45.6%;--s:4px;--d:19.6s;--t:-15.6s;--dx:-4px"></i><i style="--x:82.7%;--s:2px;--d:12.8s;--t:-10.2s;--dx:10px"></i><i style="--x:77.0%;--s:2px;--d:15.5s;--t:-2.8s;--dx:3px"></i><i style="--x:85.9%;--s:2px;--d:17.0s;--t:-7.9s;--dx:-4px"></i><i style="--x:72.0%;--s:2px;--d:17.2s;--t:-16.6s;--dx:-35px"></i><i style="--x:7.3%;--s:2px;--d:17.0s;--t:-15.6s;--dx:-14px"></i><i style="--x:58.4%;--s:2px;--d:16.2s;--t:-12.8s;--dx:-0px"></i><i style="--x:64.9%;--s:3px;--d:17.5s;--t:-8.1s;--dx:4px"></i><i style="--x:89.7%;--s:2px;--d:18.1s;--t:-6.3s;--dx:-22px"></i><i style="--x:30.6%;--s:2px;--d:16.6s;--t:-2.2s;--dx:-31px"></i><i style="--x:30.8%;--s:2px;--d:20.6s;--t:-16.9s;--dx:-40px"></i><i style="--x:23.3%;--s:2px;--d:15.7s;--t:-19.6s;--dx:-8px"></i><i style="--x:10.7%;--s:2px;--d:18.8s;--t:-5.4s;--dx:-33px"></i><i style="--x:34.6%;--s:3px;--d:18.6s;--t:-2.4s;--dx:-20px"></i><i style="--x:13.3%;--s:2px;--d:15.6s;--t:-9.7s;--dx:15px"></i><i style="--x:21.3%;--s:4px;--d:12.9s;--t:-14.6s;--dx:-30px"></i><i style="--x:63.2%;--s:2px;--d:14.9s;--t:-19.8s;--dx:-40px"></i><i style="--x:83.5%;--s:4px;--d:14.0s;--t:-17.7s;--dx:-23px"></i></div>
+<main>
+  <div class="crest"><img class="crown" src="/crown.png" width="248" height="248" alt="The Textonia crown"></div>
+  <h1>
+    <span class="title">Textonia</span>
+    <span class="subtitle"><span>Remembrance of a Hollow Crown</span></span>
+  </h1>
+  <div class="rule" role="presentation"></div>
+  <p class="genre">A dark turn-based RPG.</p>
+  <p class="premise">Murdered by the boy he taught to read, a king walks back into a kingdom that has forgotten itself.</p>
+  <p class="status">In development.</p>
+  <nav aria-label="Follow Textonia">
+    <ul>
+      <li><a href="https://x.com/textoniagame" rel="me">X</a></li>
+      <li><a href="https://bsky.app/profile/textonia.com" rel="me">Bluesky</a></li>
+      <li><a href="https://www.tiktok.com/@textoniagame" rel="me">TikTok</a></li>
+      <li><a href="https://www.instagram.com/textoniagame" rel="me">Instagram</a></li>
+      <li><a href="https://www.threads.com/@textoniagame" rel="me">Threads</a></li>
+      <li><a href="https://www.facebook.com/textoniagame" rel="me">Facebook</a></li>
+      <li><a href="https://www.reddit.com/r/textoniagame" rel="me">Reddit</a></li>
+      <li><a href="https://textoniagame.itch.io" rel="me">itch.io</a></li>
+    </ul>
+  </nav>
+  <p class="contact">
+    <span><span class="lbl">Contact</span><a href="mailto:contact@textonia.com">contact@textonia.com</a></span>
+    <span><span class="lbl">Press</span><a href="mailto:press@textonia.com">press@textonia.com</a></span>
+  </p>
+</main>
+<footer>© 2026 Textonia</footer>
+</body>
+</html>
