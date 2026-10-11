@@ -46,7 +46,7 @@
     --gold-soft: #d9bc68;
     --gold-dim: #a08a55;
     --text: #d9d0bd;
-    --muted: #8c8577;
+    --muted: #b8b09f;
     --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
   }
   * { box-sizing: border-box; }
@@ -123,22 +123,18 @@
     animation: pulse 3.2s ease-in-out infinite;
   }
 
-  /* embers drifting up, pure CSS */
-  .embers { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-  .embers i {
+  .world { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #0e0d11 url("/media/storm_h.jpg") center / cover no-repeat; image-rendering: pixelated; }
+  @media (max-aspect-ratio: 4/5) { .world { background-image: url("/media/storm_v.jpg"); } }
+  .world video { width: 100%; height: 100%; object-fit: cover; display: block; image-rendering: pixelated; }
+  .world::after {
+    content: "";
     position: absolute;
-    bottom: -12px;
-    left: var(--x);
-    width: var(--s);
-    height: var(--s);
-    background: #ffd27a;
-    box-shadow: 0 0 6px 1px rgba(255, 190, 90, 0.75);
-    opacity: 0;
-    animation: rise var(--d) linear var(--t) infinite;
+    inset: 0;
+    background:
+      radial-gradient(60% 55% at 50% 46%, rgba(14, 13, 17, 0.60) 0%, rgba(14, 13, 17, 0.48) 60%, rgba(14, 13, 17, 0.35) 100%),
+      linear-gradient(rgba(14, 13, 17, 0.45), rgba(14, 13, 17, 0.45));
   }
-  .embers i:nth-child(3n) { background: #ffb35c; }
-  .embers i:nth-child(4n) { background: #fff0b8; }
-  main, footer { position: relative; z-index: 1; }
+  main, footer { position: relative; }
 
   h1 { margin: 0; font-weight: 400; }
   .title {
@@ -174,13 +170,6 @@
     text-shadow: 0 0 22px rgba(245, 212, 107, 0.18);
   }
   .subtitle span { padding-left: 0.2em; white-space: nowrap; }
-  .subtitle::before, .subtitle::after {
-    content: "";
-    flex: 0 1 72px;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(245, 212, 107, 0), rgba(245, 212, 107, 0.6));
-  }
-  .subtitle::after { transform: scaleX(-1); }
 
   /* hairline with a single gem */
   .rule {
@@ -320,6 +309,25 @@
     color: var(--muted);
   }
 
+  .credit { display: block; margin-top: 10px; font-size: 12px; letter-spacing: 0.06em; font-variant-caps: normal; font-feature-settings: normal; }
+  .credit a { color: inherit; text-decoration: underline; text-decoration-color: rgba(184, 176, 159, 0.4); text-underline-offset: 2px; }
+  .rain {
+    position: fixed;
+    right: 18px;
+    bottom: 16px;
+    z-index: 2;
+    padding: 7px 14px;
+    border: 1px solid rgba(245, 212, 107, 0.35);
+    border-radius: 999px;
+    background: rgba(14, 13, 17, 0.55);
+    color: var(--muted);
+    font: 600 14px/1 var(--serif);
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+  }
+  @media (max-width: 600px) { .rain { right: 12px; bottom: 12px; padding: 6px 11px; font-size: 13px; } body { padding-bottom: 64px; } }
+  .rain:hover, .rain:focus-visible, .rain[aria-pressed="true"] { color: var(--gold); border-color: rgba(245, 212, 107, 0.7); outline: none; }
   @keyframes sheen {
     0% { background-position: 100% 0, 0 0; }
     38%, 100% { background-position: 0% 0, 0 0; }
@@ -383,12 +391,12 @@
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
-    .embers { display: none; }
+    .world video { display: none; }
   }
 </style>
 </head>
 <body>
-<div class="embers" aria-hidden="true"><i style="--x:45.6%;--s:4px;--d:19.6s;--t:-15.6s;--dx:-4px"></i><i style="--x:82.7%;--s:2px;--d:12.8s;--t:-10.2s;--dx:10px"></i><i style="--x:77.0%;--s:2px;--d:15.5s;--t:-2.8s;--dx:3px"></i><i style="--x:85.9%;--s:2px;--d:17.0s;--t:-7.9s;--dx:-4px"></i><i style="--x:72.0%;--s:2px;--d:17.2s;--t:-16.6s;--dx:-35px"></i><i style="--x:7.3%;--s:2px;--d:17.0s;--t:-15.6s;--dx:-14px"></i><i style="--x:58.4%;--s:2px;--d:16.2s;--t:-12.8s;--dx:-0px"></i><i style="--x:64.9%;--s:3px;--d:17.5s;--t:-8.1s;--dx:4px"></i><i style="--x:89.7%;--s:2px;--d:18.1s;--t:-6.3s;--dx:-22px"></i><i style="--x:30.6%;--s:2px;--d:16.6s;--t:-2.2s;--dx:-31px"></i><i style="--x:30.8%;--s:2px;--d:20.6s;--t:-16.9s;--dx:-40px"></i><i style="--x:23.3%;--s:2px;--d:15.7s;--t:-19.6s;--dx:-8px"></i><i style="--x:10.7%;--s:2px;--d:18.8s;--t:-5.4s;--dx:-33px"></i><i style="--x:34.6%;--s:3px;--d:18.6s;--t:-2.4s;--dx:-20px"></i><i style="--x:13.3%;--s:2px;--d:15.6s;--t:-9.7s;--dx:15px"></i><i style="--x:21.3%;--s:4px;--d:12.9s;--t:-14.6s;--dx:-30px"></i><i style="--x:63.2%;--s:2px;--d:14.9s;--t:-19.8s;--dx:-40px"></i><i style="--x:83.5%;--s:4px;--d:14.0s;--t:-17.7s;--dx:-23px"></i></div>
+<div class="world" aria-hidden="true"><video autoplay muted loop playsinline preload="none" data-h="/media/storm_h.mp4" data-v="/media/storm_v.mp4" data-poster-h="/media/storm_h.jpg" data-poster-v="/media/storm_v.jpg" data-flashes-h="2.5" data-flashes-v="2.5" data-thunder-delay="1500"></video></div>
 <main>
   <div class="crest"><img class="crown" src="/crown.png" width="248" height="248" alt="The Textonia crown"></div>
   <h1>
@@ -416,6 +424,52 @@
     <span><span class="lbl">Press</span><a href="mailto:press@textonia.com">press@textonia.com</a></span>
   </p>
 </main>
-<footer>© 2026 Textonia</footer>
+<footer>© 2026 Textonia<span class="credit">Rain and thunder sounds by Helton Yan, from <a href="https://heltonyan.itch.io/weatherelements">Weather Elements</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>)</span></footer>
+<button class="rain" type="button" aria-pressed="false" aria-label="Rain sound">Rain sound: off</button>
+<audio id="rain" src="/media/rain.m4a" loop preload="none"></audio>
+<script>
+  (function () {
+    var v = document.querySelector(".world video");
+    var portrait = window.matchMedia("(max-aspect-ratio: 4/5)").matches;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var flashes = [];
+    if (v) {
+      var k = portrait ? "v" : "h";
+      v.poster = v.dataset["poster" + k.toUpperCase()];
+      flashes = (v.dataset["flashes" + k.toUpperCase()] || "").split(",").filter(Boolean).map(Number);
+      if (!reduce) {
+        v.src = v.dataset[k];
+        v.preload = "auto";
+        var p = v.play();
+        if (p && p.catch) { p.catch(function () { /* autoplay refused: the poster stays */ }); }
+      }
+    }
+    var b = document.querySelector(".rain"), rain = document.getElementById("rain");
+    if (!b || !rain) return;
+    rain.volume = 0.45;
+    var thunder = [1, 2, 3, 4].map(function (i) { var t = new Audio("/media/thunder_" + i + ".m4a"); t.preload = "none"; t.volume = 0.6; return t; });
+    var delay = v && v.dataset.thunderDelay ? Number(v.dataset.thunderDelay) : 1500; // the game arms thunder ~1.5 s after this flash
+    var on = false, last = 0, next = 0;
+    function tick() {
+      if (!on || !v || reduce) return;
+      var now = v.currentTime;
+      flashes.forEach(function (f) {
+        var crossed = (last <= now) ? (f > last && f <= now) : (f > last || f <= now);
+        if (crossed) {
+          var t = thunder[next++ % thunder.length];
+          setTimeout(function () { try { t.currentTime = 0; t.play(); } catch (e) {} }, delay);
+        }
+      });
+      last = now;
+      requestAnimationFrame(tick);
+    }
+    b.addEventListener("click", function () {
+      on = !on;
+      if (on) { rain.play(); last = v ? v.currentTime : 0; requestAnimationFrame(tick); } else { rain.pause(); }
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.textContent = on ? "Rain sound: on" : "Rain sound: off";
+    });
+  })();
+</script>
 </body>
 </html>
