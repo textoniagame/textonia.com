@@ -270,6 +270,18 @@
   .signup button.loading { display: none; }
   .signup .fine { margin: 12px 0 0; font-size: 15px; color: var(--muted); }
   .signup .fine a { text-decoration: underline; text-decoration-color: rgba(184, 176, 159, 0.4); text-underline-offset: 2px; }
+  .signup .hint { margin: 12px 0 0; font-size: 18px; color: var(--gold-soft); }
+  .signup .hint .fix {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--gold);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(245, 212, 107, 0.5);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
   .signup .done { display: none; }
   .signup .done .thanks {
     margin: 0 0 6px;
@@ -491,6 +503,7 @@
           </div>
         </div>
       </form>
+      <p class="hint" id="signup-hint" role="alert" hidden></p>
       <p class="fine">One email for the Steam page, one for the demo. Unsubscribe anytime. <a href="/privacy/">Privacy</a></p>
     </div>
     <div class="row-success done" role="status" tabindex="-1">
@@ -577,12 +590,48 @@
     var form = document.querySelector(".signup form");
     if (!form) return;
     /* the trap: a bot that fills the hidden field never reaches MailerLite; it sees the same thank-you */
+    var email = form.querySelector('input[type="email"]');
+    var hint = document.getElementById("signup-hint");
+    /* common typos: the confirmation email would go nowhere and the person would think the form is broken */
+    var FIX = {
+      "gmail.con": "gmail.com", "gmail.co": "gmail.com", "gmail.cm": "gmail.com", "gmail.om": "gmail.com", "gmail.cmo": "gmail.com",
+      "gmial.com": "gmail.com", "gmai.com": "gmail.com", "gamil.com": "gmail.com", "gnail.com": "gmail.com", "gmaill.com": "gmail.com",
+      "gmal.com": "gmail.com", "gmeil.com": "gmail.com", "gmali.com": "gmail.com", "gmsil.com": "gmail.com", "gmail.comm": "gmail.com", "gmail.c": "gmail.com",
+      "yahoo.con": "yahoo.com", "yahoo.co": "yahoo.com", "yaho.com": "yahoo.com", "yahooo.com": "yahoo.com",
+      "hotmail.con": "hotmail.com", "hotmail.co": "hotmail.com", "hotmal.com": "hotmail.com", "hotmial.com": "hotmail.com",
+      "outlook.con": "outlook.com", "outlok.com": "outlook.com", "icloud.con": "icloud.com", "iclod.com": "icloud.com"
+    };
+    function suggestion(v) {
+      var at = v.lastIndexOf("@");
+      if (at < 1) return "";
+      var dom = v.slice(at + 1).toLowerCase();
+      var tld = dom.replace(/\.(con|cmo|ocm|vom|xom)$/, ".com");
+      var fixed = FIX[dom] || FIX[tld] || tld;
+      return fixed !== dom ? v.slice(0, at + 1) + fixed : "";
+    }
+    function clearHint() { if (hint) { hint.hidden = true; hint.innerHTML = ""; } }
+    if (email) email.addEventListener("input", clearHint);
     form.addEventListener("submit", function (e) {
       var hp = form.querySelector('input[name="hp_website"]');
       if (hp && hp.value) {
         e.preventDefault();
         e.stopImmediatePropagation();
         ml_webform_success_47038570();
+        return;
+      }
+      var s = email ? suggestion(email.value.trim()) : "";
+      if (s && hint) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        hint.textContent = "Did you mean ";
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "fix";
+        b.textContent = s;
+        b.addEventListener("click", function () { email.value = s; clearHint(); email.focus(); });
+        hint.appendChild(b);
+        hint.appendChild(document.createTextNode("?"));
+        hint.hidden = false;
       }
     }, true);
   })();
