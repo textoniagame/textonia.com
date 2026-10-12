@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're on the list | Textonia</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0e0d11">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preload" href="/fonts/pixelify-bold-latin.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/cormorant-garamond-latin.woff" as="font" type="font/woff" crossorigin>
+<style>
+  @font-face {
+    font-family: "Pixelify Sans";
+    src: url("/fonts/pixelify-bold-latin.woff") format("woff");
+    font-weight: 700;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("/fonts/cormorant-garamond-latin.woff") format("woff");
+    font-weight: 300 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Cormorant Garamond";
+    src: url("/fonts/cormorant-garamond-italic-latin.woff") format("woff");
+    font-weight: 300 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  :root {
+    --bg: #0e0d11;
+    --bg-deep: #060508;
+    --gold: #f5d46b;
+    --gold-soft: #d9bc68;
+    --gold-dim: #a08a55;
+    --text: #d9d0bd;
+    --muted: #b8b09f;
+    --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg-deep); }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    text-align: center;
+    color: var(--text);
+    font: 500 20px/1.55 var(--serif);
+    background:
+      radial-gradient(60% 46% at 50% 30%, rgba(245, 212, 107, 0.085) 0%, rgba(245, 212, 107, 0) 70%),
+      radial-gradient(130% 100% at 50% 34%, #15131a 0%, var(--bg) 46%, var(--bg-deep) 100%);
+    background-color: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  .world { position: fixed; inset: 0; z-index: -1; background: #0e0d11 url("/media/storm_h.jpg") center / cover no-repeat; image-rendering: pixelated; }
+  @media (max-aspect-ratio: 4/5) { .world { background-image: url("/media/storm_v.jpg"); } }
+  .world::after { content: ""; position: absolute; inset: 0; background: rgba(14, 13, 17, 0.66); }
+  .crown { width: 150px; height: 150px; display: block; margin: 0 auto 6px; mix-blend-mode: lighten; }
+  .title {
+    font-family: "Pixelify Sans", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(44px, 12vw, 72px);
+    line-height: 1;
+    color: var(--gold);
+    text-decoration: none;
+    filter: drop-shadow(0 0 16px rgba(245, 212, 107, 0.22)) drop-shadow(0 3px 0 rgba(0, 0, 0, 0.55));
+  }
+  .kicker {
+    margin: 34px 0 10px;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.2em;
+    color: var(--gold-soft);
+  }
+  .lead { margin: 0 auto; max-width: 30rem; font-size: clamp(22px, 3vw, 27px); font-style: italic; line-height: 1.42; text-wrap: balance; }
+  .small { margin: 22px auto 0; max-width: 30rem; font-size: 18px; color: var(--muted); }
+  nav { margin-top: 30px; }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; row-gap: 10px; }
+  nav li { display: flex; align-items: center; }
+  nav li + li::before { content: "\00B7"; margin: 0 12px; color: var(--gold-dim); }
+  a { color: inherit; }
+  nav a {
+    font-size: 16px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.12em;
+    text-decoration: none;
+  }
+  nav a:hover, nav a:focus-visible { color: var(--gold); outline: none; }
+  .back { display: inline-block; margin-top: 34px; font-size: 16px; color: var(--muted); text-decoration: underline; text-decoration-color: rgba(184, 176, 159, 0.4); text-underline-offset: 3px; }
+  @media (max-width: 600px) { nav li + li::before { margin: 0 7px; } nav a { font-size: 15px; } }
+</style>
+</head>
+<body>
+<div class="world" aria-hidden="true"></div>
+<main>
+  <img class="crown" src="/crown.png" width="150" height="150" alt="">
+  <a class="title" href="/">Textonia</a>
+  <p class="kicker">You're on the list.</p>
+  <p class="lead">We'll write when the Steam page goes live, and once more when the demo is out. Nothing else.</p>
+  <p class="small">Until then, the game grows in public here:</p>
+  <nav aria-label="Follow Textonia">
+    <ul>
+      <li><a href="https://bsky.app/profile/textonia.com">Bluesky</a></li>
+      <li><a href="https://x.com/textoniagame">X</a></li>
+      <li><a href="https://www.tiktok.com/@textoniagame">TikTok</a></li>
+      <li><a href="https://www.instagram.com/textoniagame">Instagram</a></li>
+    </ul>
+  </nav>
+  <a class="back" href="/">Back to textonia.com</a>
+</main>
+</body>
+</html>

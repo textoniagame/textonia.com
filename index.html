@@ -227,6 +227,66 @@
 
   .status.ea { margin-top: 8px; color: var(--gold-soft); }
 
+  /* one email when the Steam page and the demo go live (MailerLite form, our styling) */
+  .signup { margin: 40px auto 0; max-width: 30rem; }
+  .signup .ask {
+    margin: 0 0 14px;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--text);
+  }
+  .signup form { margin: 0; }
+  .signup .row { display: flex; gap: 10px; }
+  .signup input[type="email"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 11px 16px;
+    border: 1px solid rgba(245, 212, 107, 0.35);
+    border-radius: 999px;
+    background: rgba(14, 13, 17, 0.62);
+    color: var(--text);
+    font: 500 18px/1.2 var(--serif);
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .signup input[type="email"]::placeholder { color: var(--muted); opacity: 0.8; }
+  .signup input[type="email"]:focus { border-color: rgba(245, 212, 107, 0.8); box-shadow: 0 0 14px rgba(245, 212, 107, 0.18); }
+  .signup .ml-error input[type="email"] { border-color: #c96a5a; }
+  .signup button {
+    flex: 0 0 auto;
+    padding: 11px 20px;
+    border: 1px solid rgba(245, 212, 107, 0.7);
+    border-radius: 999px;
+    background: rgba(245, 212, 107, 0.12);
+    color: var(--gold);
+    font: 700 16px/1.2 var(--serif);
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    transition: background 0.3s ease, text-shadow 0.3s ease;
+  }
+  .signup button:hover, .signup button:focus-visible { background: rgba(245, 212, 107, 0.22); text-shadow: 0 0 12px rgba(245, 212, 107, 0.45); outline: none; }
+  .signup button.loading { display: none; }
+  .signup .fine { margin: 12px 0 0; font-size: 15px; color: var(--muted); }
+  .signup .fine a { text-decoration: underline; text-decoration-color: rgba(184, 176, 159, 0.4); text-underline-offset: 2px; }
+  .signup .done { display: none; }
+  .signup .done .thanks {
+    margin: 0 0 6px;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    font-feature-settings: "smcp", "c2sc";
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-shadow: 0 0 16px rgba(245, 212, 107, 0.35);
+  }
+  .signup .done .next { margin: 0; font-size: 21px; font-style: italic; color: var(--text); text-wrap: balance; }
+  /* the trap field: people never see it, bots fill it */
+  .signup .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+  .credit .sep { margin: 0 6px; }
+
   /* menu line */
   nav { margin: 46px 0 0; }
   nav ul {
@@ -372,6 +432,9 @@
     nav li:nth-child(5)::before { display: none; }
   }
   @media (max-width: 600px) {
+    .signup { margin-top: 32px; }
+    .signup .row { flex-direction: column; }
+    .signup .ask { font-size: 18px; }
     body { padding: 36px 16px 28px; font-size: 18px; }
     .crest, .crown { width: 184px; height: 184px; }
     .crest::before { inset: -46px; }
@@ -407,6 +470,35 @@
   <p class="premise">Murdered by the boy he taught to read, a king walks back into a kingdom that has forgotten itself.</p>
   <p class="status">In development.</p>
   <p class="status ea">Early Access 2027</p>
+  <section id="mlb2-47038570" class="signup ml-subscribe-form ml-subscribe-form-47038570" aria-label="Email signup">
+    <div class="row-form">
+      <p class="ask">Get one email when the Steam page and the demo go live.</p>
+      <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2706029/forms/201130414627096393/subscribe" data-code="" method="post" target="_blank">
+        <div class="row">
+          <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required" style="flex: 1 1 auto; display: flex;">
+            <label class="sr-only" for="signup-email">Email</label>
+            <input id="signup-email" type="email" name="fields[email]" placeholder="Your email" autocomplete="email" aria-required="true" required style="width: 100%;">
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="signup-website">Leave this empty</label>
+            <input id="signup-website" type="text" name="hp_website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="ml-submit" value="1">
+          <input type="hidden" name="anticsrf" value="true">
+          <div class="ml-form-embedSubmit">
+            <button type="submit" class="primary">Notify me</button>
+            <button disabled="disabled" style="display: none;" type="button" class="loading"><span class="sr-only">Sending</span></button>
+          </div>
+        </div>
+      </form>
+      <p class="fine">One email for the Steam page, one for the demo. Unsubscribe anytime. <a href="/privacy/">Privacy</a></p>
+    </div>
+    <div class="row-success done" role="status" tabindex="-1">
+      <p class="thanks">Thank you.</p>
+      <p class="next">One more step: open the email from Textonia and tap the confirmation link.</p>
+      <p class="fine">Nothing after a few minutes? Look in your spam or promotions folder.</p>
+    </div>
+  </section>
   <nav aria-label="Follow Textonia">
     <ul>
       <li><a href="https://x.com/textoniagame" rel="me">X</a></li>
@@ -424,7 +516,7 @@
     <span><span class="lbl">Press</span><a href="mailto:press@textonia.com">press@textonia.com</a></span>
   </p>
 </main>
-<footer>© 2026 Textonia<span class="credit">Rain and thunder sounds by Helton Yan, from <a href="https://heltonyan.itch.io/weatherelements">Weather Elements</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>)</span></footer>
+<footer>© 2026 Textonia<span class="credit">Rain and thunder sounds by Helton Yan, from <a href="https://heltonyan.itch.io/weatherelements">Weather Elements</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>)<span class="sep">·</span><a href="/privacy/">Privacy</a></span></footer>
 <button class="rain" type="button" aria-pressed="false" aria-label="Rain sound">Rain sound: off</button>
 <audio id="rain" src="/media/rain.m4a" loop preload="none"></audio>
 <script>
@@ -471,5 +563,30 @@
     });
   })();
 </script>
+<script>
+  /* MailerLite calls this after a successful signup */
+  function ml_webform_success_47038570() {
+    var f = document.querySelector(".ml-subscribe-form-47038570");
+    if (!f) return;
+    f.querySelector(".row-form").style.display = "none";
+    var done = f.querySelector(".row-success");
+    done.style.display = "block";
+    try { done.focus({ preventScroll: true }); } catch (e) {}
+  }
+  (function () {
+    var form = document.querySelector(".signup form");
+    if (!form) return;
+    /* the trap: a bot that fills the hidden field never reaches MailerLite; it sees the same thank-you */
+    form.addEventListener("submit", function (e) {
+      var hp = form.querySelector('input[name="hp_website"]');
+      if (hp && hp.value) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        ml_webform_success_47038570();
+      }
+    }, true);
+  })();
+</script>
+<script src="https://groot.mailerlite.com/js/w/webforms.min.js?v83147fa8ce2d95cb73ece7f28b469519" type="text/javascript"></script>
 </body>
 </html>
